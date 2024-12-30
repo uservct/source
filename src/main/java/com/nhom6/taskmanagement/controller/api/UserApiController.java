@@ -60,17 +60,17 @@ public class UserApiController {
     public ResponseEntity<String> changePassword(@RequestBody ChangePasswordDTO request) {
         try {
             // Gọi service để thay đổi mật khẩu
-            userService.changePassword(request);
-            return ResponseEntity.ok("Password changed successfully");
-        } catch (InvalidPasswordException e) {
-            // Xử lý trường hợp mật khẩu hiện tại sai hoặc mật khẩu mới và xác nhận không khớp
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (ResourceNotFoundException e) {
-            // Xử lý trường hợp không tìm thấy người dùng
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-        } catch (Exception e) {
-            // Xử lý các lỗi không mong muốn
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error changing password");
+            String message = userService.changePassword(request);
+            return ResponseEntity.ok(message); // Trả về thông báo thành công
+        } catch (InvalidPasswordException ex) {
+            // Nếu mật khẩu hiện tại không đúng, hoặc các lỗi liên quan đến mật khẩu
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+        } catch (ResourceNotFoundException ex) {
+            // Nếu không tìm thấy người dùng
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (Exception ex) {
+            // Xử lý các lỗi không xác định
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Đã xảy ra lỗi không xác định");
         }
     }
 

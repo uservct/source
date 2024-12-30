@@ -41,8 +41,7 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Profile Content -->
+        <div class="container py-4">
             <div class="row">
                 <!-- Left Column - Personal Information -->
                 <div class="col-md-8">
@@ -116,68 +115,9 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Security Settings -->
-                    <div class="card" sec:authorize="${#vars.user.id == authentication.principal.id}">
-                        <div class="card-header">
-                            <h5 class="mb-0">
-                                <i class="fas fa-shield-alt me-2"></i>Bảo mật
-                            </h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <div>
-                                    <h6 class="mb-1">Mật khẩu</h6>
-                                    <p class="text-muted small mb-0">Thay đổi mật khẩu định kỳ để bảo vệ tài khoản</p>
-                                </div>
-                                <!-- Nút đổi mật khẩu -->
-                                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
-                                    <i class="fas fa-key me-2"></i>Đổi mật khẩu
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Modal Đổi Mật khẩu -->
-                    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="changePasswordModalLabel">Đổi mật khẩu</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <form action="/change-password" method="POST">
-                                    <div class="modal-body">
-                                        <!-- Mật khẩu hiện tại -->
-                                        <div class="mb-3">
-                                            <label for="currentPassword" class="form-label">Mật khẩu hiện tại</label>
-                                            <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
-                                        </div>
-                                        <!-- Mật khẩu mới -->
-                                        <div class="mb-3">
-                                            <label for="newPassword" class="form-label">Mật khẩu mới</label>
-                                            <input type="password" class="form-control" id="newPassword" name="newPassword" required>
-                                        </div>
-                                        
-                                        <!-- Xác nhận mật khẩu mới -->
-                                        <div class="mb-3">
-                                            <label for="confirmPassword" class="form-label">Xác nhận mật khẩu mới</label>
-                                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
-                                        </div>
-                                    </div>
-
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
 
-                <!-- Right Column - Statistics -->
+                <!-- Right Column - Projects and Tasks -->
                 <div class="col-md-4">
                     <!-- Projects Card -->
                     <div class="card mb-4">
@@ -221,9 +161,71 @@
                 </div>
             </div>
         </div>
+        <!-- Security Settings -->
+        <div class="container py-4">
+        <div class="row">
+        <div class="col-md-8" style="margin-top: -50px;">
+        <div class="card" sec:authorize="${#vars.user.id == authentication.principal.id}">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-shield-alt me-2"></i>Bảo mật
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <h6 class="mb-1">Mật khẩu</h6>
+                        <p class="text-muted small mb-0">Thay đổi mật khẩu định kỳ để bảo vệ tài khoản</p>
+                    </div>
+                    <!-- Nút đổi mật khẩu -->
+                    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                        <i class="fas fa-key me-2"></i>Đổi mật khẩu
+                    </button>
+                </div>
+            </div>
+        </div>
 
-        <!-- Edit Profile Modal -->
-        <div class="modal fade" id="editProfileModal" tabindex="-1">
+        <!-- Modal Đổi Mật khẩu -->
+        <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="changePasswordModalLabel">Đổi mật khẩu</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="changePasswordForm">
+                        <div class="modal-body">
+                            <!-- Hiển thị thông báo -->
+                            <div id="changePasswordMessage" class="alert d-none" role="alert"></div>
+                            
+                            <!-- Mật khẩu hiện tại -->
+                            <div class="mb-3">
+                                <label for="currentPassword" class="form-label">Mật khẩu hiện tại</label>
+                                <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+                            </div>
+                            <!-- Mật khẩu mới -->
+                            <div class="mb-3">
+                                <label for="newPassword" class="form-label">Mật khẩu mới</label>
+                                <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                            </div>
+                            
+                            <!-- Xác nhận mật khẩu mới -->
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label">Xác nhận mật khẩu mới</label>
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                            <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+         <!-- Edit Profile Modal -->
+         <div class="modal fade" id="editProfileModal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">

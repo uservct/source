@@ -7,13 +7,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Modal references
     const newPasswordModalElement = document.getElementById('newPasswordModal');
     const changePasswordModal = newPasswordModalElement ? new bootstrap.Modal(newPasswordModalElement) : null;
-    
+
     // New Password Form Handler (Thay đổi mật khẩu)
     const newPasswordForm = document.getElementById('changePasswordForm');
     if (newPasswordForm) {
-        newPasswordForm.addEventListener('submit', async function(e) {
+        newPasswordForm.addEventListener('submit', async function (e) {
             e.preventDefault();
-             
+
             // Kiểm tra tính hợp lệ của form
             if (!this.checkValidity()) {
                 e.stopPropagation();
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 email: emailUser,
                 currentPassword: formData.get('currentPassword'),
                 newPassword: formData.get('newPassword'),
-                confirmPassword: formData.get('confirmPassword')
+                confirmPassword: formData.get('confirmPassword'),
             };
 
             // Kiểm tra nếu mật khẩu mới và mật khẩu xác nhận không khớp
@@ -37,29 +37,25 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             try {
-                // Gửi yêu cầu POST lên server để thay đổi mật khẩu
                 const response = await fetch('/api/users/profile/change-password', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        [header]: token
+                        [header]: token,
                     },
-                    body: JSON.stringify(data)
+                    body: JSON.stringify(data),
                 });
 
                 if (response.ok) {
                     toast.show('success', 'Đổi mật khẩu thành công');
-                    if (changePasswordModal) {
-                        changePasswordModal.hide();
-                    }
+                    if (changePasswordModal) changePasswordModal.hide();
                     this.reset();
                 } else {
-                    // Xử lý lỗi nếu không thành công
                     const error = await response.json();
                     toast.show('error', error.message || 'Có lỗi xảy ra khi đổi mật khẩu');
                 }
             } catch (error) {
-                toast.show('error', 'Có lỗi xảy ra khi đổi mật khẩu');
+                toast.show('error', 'Không thể kết nối đến máy chủ. Vui lòng thử lại sau!');
             }
         });
     }

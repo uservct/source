@@ -119,7 +119,7 @@ public class UserService {
     }
 
     // Đổi pass sau khi xác nhận đúng pass hiện tại
-    public void changePassword(ChangePasswordDTO request) {
+    public String changePassword(ChangePasswordDTO request) {
         // Kiểm tra mật khẩu mới và xác nhận mật khẩu có khớp
         if (!request.getNewPassword().equals(request.getConfirmPassword())) {
             throw new InvalidPasswordException("New password and confirmation do not match");
@@ -144,6 +144,7 @@ public class UserService {
         userRepository.save(user);
     
         log.info("Password changed successfully for user: {}", user.getUsername());
+        return "Password changed successfully!";
     }
     
 
